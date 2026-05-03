@@ -4,7 +4,7 @@ import Summary from './Summary'
 
 function App() {
   const [transactions, setTransactions] = useState([
-    { id: 1, description: "Salary", amount: 5000, type: "income", category: "salary", date: "2025-01-01" },
+  { id: 1, description: "Salary", amount: 5000, type: "income", category: "salary", date: "2025-01-01" },
     { id: 2, description: "Rent", amount: 1200, type: "expense", category: "housing", date: "2025-01-02" },
     { id: 3, description: "Groceries", amount: 150, type: "expense", category: "food", date: "2025-01-03" },
     { id: 4, description: "Freelance Work", amount: 800, type: "expense", category: "salary", date: "2025-01-05" },
@@ -40,11 +40,6 @@ function App() {
   if (filterCategory !== "all") {
     filteredTransactions = filteredTransactions.filter(t => t.category === filterCategory);
   }
-
-  const handleDelete = (id) => {
-    if (!window.confirm("Are you sure you want to delete this transaction?")) return;
-    setTransactions(transactions.filter(t => t.id !== id));
-  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -125,7 +120,7 @@ function App() {
               <th>Description</th>
               <th>Category</th>
               <th>Amount</th>
-              <th></th>
+
             </tr>
           </thead>
           <tbody>
@@ -137,9 +132,7 @@ function App() {
                 <td className={t.type === "income" ? "income-amount" : "expense-amount"}>
                   {t.type === "income" ? "+" : "-"}${t.amount}
                 </td>
-                <td>
-                  <button className="delete-btn" onClick={() => handleDelete(t.id)}>Delete</button>
-                </td>
+
               </tr>
             ))}
           </tbody>
