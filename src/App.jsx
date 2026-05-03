@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import './App.css'
+import Summary from './Summary'
 
 function App() {
   const [transactions, setTransactions] = useState([
@@ -40,6 +41,11 @@ function App() {
     filteredTransactions = filteredTransactions.filter(t => t.category === filterCategory);
   }
 
+  const handleDelete = (id) => {
+    if (!window.confirm("Are you sure you want to delete this transaction?")) return;
+    setTransactions(transactions.filter(t => t.id !== id));
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!description || !amount) return;
@@ -66,20 +72,7 @@ function App() {
       <h1>Finance Tracker</h1>
       <p className="subtitle">Track your income and expenses</p>
 
-      <div className="summary">
-        <div className="summary-card">
-          <h3>Income</h3>
-          <p className="income-amount">${totalIncome}</p>
-        </div>
-        <div className="summary-card">
-          <h3>Expenses</h3>
-          <p className="expense-amount">${totalExpenses}</p>
-        </div>
-        <div className="summary-card">
-          <h3>Balance</h3>
-          <p className="balance-amount">${balance}</p>
-        </div>
-      </div>
+      <Summary totalIncome={totalIncome} totalExpenses={totalExpenses} balance={balance} />
 
       <div className="add-transaction">
         <h2>Add Transaction</h2>
@@ -132,7 +125,7 @@ function App() {
               <th>Description</th>
               <th>Category</th>
               <th>Amount</th>
-
+              <th></th>
             </tr>
           </thead>
           <tbody>
@@ -144,7 +137,9 @@ function App() {
                 <td className={t.type === "income" ? "income-amount" : "expense-amount"}>
                   {t.type === "income" ? "+" : "-"}${t.amount}
                 </td>
-
+                <td>
+                  <button className="delete-btn" onClick={() => handleDelete(t.id)}>Delete</button>
+                </td>
               </tr>
             ))}
           </tbody>
